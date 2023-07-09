@@ -14,12 +14,7 @@ const TodoItems = styled.li`
 
 export default function Home() {
   const [title, setTitle] = useState("");
-  const date = new Date();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-
+  
   const onChange = (e) => {
     setTitle(e.target.value);
   }
@@ -33,7 +28,17 @@ export default function Home() {
 
   const onClick = () => {
     const id = Date.now();
-    dispatch(addTodo(title, id));
+    const time = getTime();
+    dispatch(addTodo(title, id, time));
+  }
+
+  function getTime() {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    return `${month}-${day} ${hour}:${minute}`;
   }
 
   const currentState = useSelector((state) => state);
@@ -61,7 +66,7 @@ export default function Home() {
           <TodoItems key={state.id} id={state.id}>
             <input type="checkbox" onChange={onCheck}/>
             <TextBox checked={state.isCompleted}>{state.title}</TextBox>
-            {`${month}-${day} ${hour}:${minute}`}
+            {state.time}
             <button onClick={handleClick}>X</button>
           </TodoItems>
         ))}

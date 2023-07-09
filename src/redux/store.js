@@ -4,12 +4,13 @@ const ADD = "ADD";
 const DELETE = "DELETE";
 const TODO_TOGGLE = "TODO_TOGGLE";
 
-export const addTodo = (title, id) => {
+export const addTodo = (title, id, time) => {
   return {
     type: ADD,
     title,
     id,
-    isCompleted: false
+    isCompleted: false,
+    time
   }
 }
 export const deleteTodo = (id) => {
@@ -33,6 +34,7 @@ const reducer = (state = [], action) => {
         title: action.title,
         id: action.id,
         isCompleted: false,
+        time: action.time
       }]
     }
     case DELETE:
