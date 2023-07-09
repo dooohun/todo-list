@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addTodo, deleteTodo, todotoggle } from "../store";
+import { addTodo, deleteTodo, todotoggle } from "../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
