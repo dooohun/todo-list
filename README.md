@@ -16,4 +16,4 @@ todo를 추가한 시간
 
 ## 진행과정
 기본 기능 구현 성공  
-styled-component를 통한 css 구현 해야 함  
+styled-component를 통한 css 구현 함 - styledComponent.js 파일 분리함  
