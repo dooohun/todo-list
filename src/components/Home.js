@@ -1,16 +1,8 @@
 import { useState } from "react";
-import { addTodo, deleteTodo, todotoggle } from "../redux/store";
+import { addTodo, deleteTodo, toggleTodo } from "../redux/todoSlice";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
-
-const TextBox = styled.div`
-  text-decoration: ${(props) => (props.checked ? "line-through" : "none")};
-`
-const TodoItems = styled.li`
-  display: flex;
-  align-items: flex-start;
-  padding: 0px;
-`
+import * as s from "./styledComponents";
+import "./Home.css"
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -27,21 +19,21 @@ export default function Home() {
   const dispatch = useDispatch();
 
   const onClick = () => {
-    const id = Date.now();
     const time = getTime();
-    dispatch(addTodo(title, id, time));
+    dispatch(addTodo({ title, time }));
   }
 
   function getTime() {
-    const date = new Date();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-    return `${month}-${day} ${hour}:${minute}`;
-  }
+  const date = new Date();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  return `${month}-${day} ${hour}:${minute}`;
+}
 
-  const currentState = useSelector((state) => state);
+
+  const currentState = useSelector((state) => state.todo);
 
   const handleClick = (e) => {
     const targetId = parseInt(e.target.parentNode.id);
@@ -50,27 +42,27 @@ export default function Home() {
 
   const onCheck = (e) => {
     const targetId = parseInt(e.target.parentNode.id);
-    dispatch(todotoggle(targetId, e.target.checked));
-    console.log(e.target.checked);
+    const targetIsChecked = e.target.checked;
+    dispatch(toggleTodo({ targetId, targetIsChecked }));
   }
 
   return (
-    <div>
+    <s.MainContainer>
       <h1>To Do List</h1>
       <form onSubmit={onSubmit}>
         <input type="text" value={title} onChange={onChange} />
         <button onClick={onClick}>ADD</button>
       </form>
-      <ul>
+      <s.TodoItems>
         {currentState.map((state) => (
-          <TodoItems key={state.id} id={state.id}>
-            <input type="checkbox" onChange={onCheck}/>
-            <TextBox checked={state.isCompleted}>{state.title}</TextBox>
-            {state.time}
-            <button onClick={handleClick}>X</button>
-          </TodoItems>
+          <s.TodoItem key={state.id} id={state.id}>
+            <s.CheckBox type="checkbox" onChange={onCheck}/>
+            <s.TextBox checked={state.isCompleted}>{state.title}</s.TextBox>
+            <s.TimeBox>{state.time}</s.TimeBox>
+            <s.DeleteImg src="https://cdn-icons-png.flaticon.com/512/3405/3405244.png" onClick={handleClick}/>
+          </s.TodoItem>
         ))}
-      </ul>
-    </div>
+      </s.TodoItems>
+    </s.MainContainer>
   )
 }

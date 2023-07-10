@@ -1,5 +1,7 @@
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import todoReducer from "./todoSlice";
 
+/*
 const ADD = "ADD";
 const DELETE = "DELETE";
 const TODO_TOGGLE = "TODO_TOGGLE";
@@ -53,7 +55,12 @@ const reducer = (state = [], action) => {
       return state;
   }
 }
-  
-const store = createStore(reducer)
+*/
+
+const store = configureStore({
+  reducer: {
+    todo: todoReducer
+  }
+})
 
 export default store;
